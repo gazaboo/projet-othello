@@ -1,11 +1,11 @@
 class Player():
     def __init__(self, representation):
         self.representation = representation
+        self.possible_moves = []
         
     def capture(self, x, y, board):
-        cell = board.get_cell(x, y)
-        cell.set_owner(self)
-        pieces_to_flip = board.get_neighbors_in_all_directions(x, y, self)
+        board.get_cell(x, y).set_owner(self)
+        pieces_to_flip = board.get_surrounded_pieces_in_all_directions(x, y, self)
         for piece in pieces_to_flip: 
             piece.set_owner(self)
         

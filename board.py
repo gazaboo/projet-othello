@@ -21,29 +21,22 @@ class Board():
         print(s)
 
     def get_cell(self, x, y):
-        return next(filter(lambda cell: cell.x == x and cell.y == y, self.cells), None)
-
-    def get_neighbors(self, x, y):
-        neighbors = list(filter(lambda cell: cell.occupied 
-                                             and abs(cell.x - x) + abs(cell.y - y) <=1 , 
-                                self.cells))
-        return neighbors if len(neighbors) > 0 else None
+        if x in range(0, 8) and y in range(0,8): 
+            return self.cells[x + 8*y]
+        else: return None
     
-    def is_legal_move(self, x, y, player):
-        pass
-        
-    def get_neighbors_in_one_direction(self, x, y, player, direction):
+    def get_surrounded_pieces_in_one_direction(self, x, y, player, direction):
         neighbors = []
         current = self.get_cell(x + direction['x'], y + direction['y'])
-        while current is not None:
+        while current is not None and current.owner is not None:
             if current.owner is player:
-                return neighbors
+                return neighbors  
             else:
                 neighbors.append(current)
                 current = self.get_cell(current.x + direction['x'], current.y + direction['y'])
         return None
          
-    def get_neighbors_in_all_directions(self, x, y, player):
+    def get_surrounded_pieces_in_all_directions(self, x, y, player):
         directions = {
             "RIGHT" : {"x":1 , "y":0 },
             "LEFT"  : {"x":-1, "y":0 },
@@ -52,8 +45,16 @@ class Board():
         }
         neighbors = []
         for dir in directions.values():
-            neighbor_dir = self.get_neighbors_in_one_direction(x, y, player, dir)
+            neighbor_dir = self.get_surrounded_pieces_in_one_direction(x, y, player, dir)
             if neighbor_dir is not None:
                 neighbors.extend(neighbor_dir)
         return neighbors
     
+    def compute_possible_moves(self, player):
+        empty_cells = list(filter(lambda cell: cell.owner is None, self.cells))
+        player.possible_moves = {}
+        for cell in empty_cells:
+            surrounded_pieces = self.get_surrounded_pieces_in_all_directions(cell.x, cell.y, player) 
+            if len(surrounded_pieces) > 0:
+                player.possible_moves[(cell.x, cell.y)] = surrounded_pieces
+
