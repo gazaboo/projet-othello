@@ -57,4 +57,4 @@ class Board():
             surrounded_pieces = self.get_surrounded_pieces_in_all_directions(cell.x, cell.y, player) 
             if len(surrounded_pieces) > 0:
                 player.possible_moves[(cell.x, cell.y)] = surrounded_pieces
-
+        return player.possible_moves
