@@ -1,7 +1,7 @@
 class Player():
     def __init__(self, representation):
         self.representation = representation
-        self.possible_moves = []
+        # self.possible_moves = []
         self.has_moved = False
         
     def capture(self, x, y, board):
