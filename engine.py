@@ -14,7 +14,7 @@ class Engine():
 
     def next_turn(self):
         self.display_game()
-        legal_moves = self.board.compute_possible_moves(self.current_player)
+        legal_moves = self.board.compute_legal_moves(self.current_player)
         if len(legal_moves) > 0:
             col, row = self.get_legal_move_from_player(legal_moves, self.current_player)
             self.current_player.capture(col, row, self.board)
@@ -32,7 +32,7 @@ class Engine():
         val = input(f"Tour du joueur {player.representation} (ex : c 2) : ")
         pattern = re.compile( "^[a-zA-Z] [0-9]+$" )
         while not pattern.match(val):
-            val = input(f"""Le format des données est incorrect ! \nTour du joueur {player.representation} (ex : c 2) : """)
+            val = input(f"Le format des données est incorrect ! \nTour du joueur {player.representation} (ex : c 2) : ")
         col, row = val.split(" ")
         col = string.ascii_uppercase.index(col.upper())
         row = int(row)

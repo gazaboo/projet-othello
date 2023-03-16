@@ -52,7 +52,7 @@ class Board():
                 neighbors.extend(neighbor_dir)
         return neighbors
     
-    def compute_possible_moves(self, player):
+    def compute_legal_moves(self, player):
         empty_cells = filter(lambda cell: cell.owner is None, self.cells)
         possible_moves = {}
         for cell in empty_cells:
